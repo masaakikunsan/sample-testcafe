@@ -1,67 +1,80 @@
 <template>
   <section class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        sample-testcafe
-      </h1>
-      <h2 class="subtitle">
-        My fine Nuxt.js project
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green"
-          >Documentation</a
-        >
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-          >GitHub</a
-        >
-      </div>
+    <div class="head">
+      <h1>ユーザー一覧</h1>
+      <button @click="$router.push('/create')">
+        ユーザーを追加する
+      </button>
+    </div>
+    <div v-if="users.length" class="table-wrapper">
+      <table data-test="user-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>ユーザー名</th>
+            <th>bio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-for="(user, key) in users">
+            <tr :key="key">
+              <td>{{ user.id }}</td>
+              <td data-test="user-name">{{ user.name }}</td>
+              <td data-test="user-bio">{{ user.bio }}</td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
     </div>
   </section>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
 export default {
-  components: {
-    Logo
+  async asyncData({ app }) {
+    const users = await app.$axios.$get('/user')
+    return {
+      users
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .container {
   margin: 0 auto;
-  min-height: 100vh;
+  padding: 20px;
+  width: 800px;
+}
+
+.head {
   display: flex;
-  justify-content: center;
   align-items: center;
-  text-align: center;
 }
 
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
+h1 {
+  margin-right: 30px;
 }
 
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
+.table-wrapper {
+  margin-top: 30px;
 }
 
-.links {
-  padding-top: 15px;
+table {
+  border: 1px solid #ccc;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+td,
+th {
+  padding: 10px;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+td:last-child,
+th:last-child {
+  border-right: 0;
 }
 </style>

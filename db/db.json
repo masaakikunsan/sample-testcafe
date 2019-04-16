@@ -4,6 +4,11 @@
       "id": 1,
       "name": "masaakikunsan",
       "bio": "自意識過剰な正義のヒーロー"
+    },
+    {
+      "name": "test",
+      "bio": "bioだよ〜",
+      "id": 2
     }
   ]
 }
